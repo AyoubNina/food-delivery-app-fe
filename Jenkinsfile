@@ -15,20 +15,19 @@ tools {
 
  stage('Install Dependencies') {
       steps {
-
-        sh 'npm ci' //NPM clean install what it will do, it will check all the dependencies 
-                    //that are available in package.json file and install all those for you.
+//NPM clean install what it will do, it will check all the dependencies 
+//that are available in package.json file and install all those for you.
+        sh 'npm ci' 
       }
     }
 
     stage('Build Project') {
       steps {
-        // run the NPM run build to make sure that you're able to build the project successfully.
+ // run the NPM run build to make sure that you're able to build the project successfully.
         sh 'npm run build'
       }
     }
 //So taking the Docker hub credentials, you log in to Docker Hub, you build an image with the new version
-
 //and push that image to Docker Hub with that version.
 
     stage('Docker Build and Push') {
@@ -57,7 +56,10 @@ tools {
        sh '''
           sed -i "s/image:.*/image: jiheneayoub1\\/food-delivery-app-fe:${VERSION}/" aws/angular-manifest.yml
         '''
-
+//When our pipeline is successfull and we changer the version of our image, the deploymentfolder is updated with that build number as the version number with the tag 'update immage tag' 
+//and of course the version of our image in the yaml file.And wherever there's a change in the version number,ArgoCD comes and pull this folder ....
+          //
+          //
           sh 'git checkout master'
           sh 'git add .'
           sh 'git commit -m "Update image tag"'
